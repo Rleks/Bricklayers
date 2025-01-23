@@ -46,13 +46,13 @@ def process_gcode(input_file, layer_height, extrusion_multiplier):
         lines = infile.readlines()
 
     # Identify the total number of layers by looking for `G1 Z` commands
-    total_layers = sum(1 for line in lines if line.startswith("G1 Z"))
+    total_layers = sum(1 for line in lines if line.startswith("G1") and "Z" in line)
 
     # Process the G-code
     modified_lines = []
     for line in lines:
         # Detect layer changes
-        if line.startswith("G1 Z"):
+        if line.startswith("G1") and "Z" in line:
             z_match = re.search(r'Z([-\d.]+)', line)
             if z_match:
                 current_z = float(z_match.group(1))
